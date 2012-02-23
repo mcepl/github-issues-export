@@ -127,7 +127,7 @@ def file_issue(ghub, cnf, iss):
     et.SubElement(issue_xml, 'rep_platform').text = ''
     et.SubElement(issue_xml, 'op_sys').text = ''
     et.SubElement(issue_xml, 'bug_status').text = status_conversion[iss.state]
-    et.SubElement(issue_xml, 'status_whiteboard').text = labels
+    et.SubElement(issue_xml, 'status_whiteboard').text = ", ".join(labels)
     et.SubElement(issue_xml, 'priority').text = ''
     et.SubElement(issue_xml, 'bug_severity').text = ''
     et.SubElement(issue_xml, 'votes').text = iss.votes
