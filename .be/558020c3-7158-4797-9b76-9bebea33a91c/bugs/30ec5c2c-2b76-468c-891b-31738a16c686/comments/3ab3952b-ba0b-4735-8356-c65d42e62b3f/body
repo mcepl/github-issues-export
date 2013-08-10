@@ -1,0 +1,3 @@
+We need to switch to v3. Also consider
+http://stackoverflow.com/a/10626326 (i.e., don't use library, but write
+directly to the REST API).
