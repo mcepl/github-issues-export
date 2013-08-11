@@ -9,7 +9,8 @@ import dateutil.parser
 import getpass
 import logging
 import os.path
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(format='%(levelname)s:%(funcName)s:%(message)s',
+                    level=logging.INFO)
 
 CLOSING_MESSAGE = """It is necessary to fix all email addresses
 to correspond to bugzilla users.
@@ -57,13 +58,14 @@ def load_default_configuration():
     parser.add_argument("-w", "--github_password", metavar="PASSW",
                         action="store", dest="github_password", default=None,
                         help="GitHub password")
-    # parser.add_argument("-A", "--github_api_key", metavar="API_KEY",
-    #                     action="store", dest="github_api_key", default=None,
-    #                     help="GitHub API key")
-    parser.add_argument("-p", "--product", required=True,
+    parser.add_argument("-b", "--be", required=False,
+                        action="store_true", dest="bugseverywhere",
+                        default=False,
+                        help="Whether to generate BE compliant output")
+    parser.add_argument("-p", "--product", required=False,
                         action="store", dest="bz_product", default=None,
                         help="Bugzilla product name")
-    parser.add_argument("-c", "--component", required=True,
+    parser.add_argument("-c", "--component", required=False,
                         action="store", dest="bz_component", default=None,
                         help="Bugzilla user name")
     parser.add_argument("repo", nargs="?",
@@ -78,11 +80,22 @@ def load_default_configuration():
     config['repo'] = options.repo
     config['bz_product'] = options.bz_product
     config['bz_component'] = options.bz_component
+    config['be'] = options.bugseverywhere
 
     return config
 
 
-def make_comment(body, who, when):
+def add_subelement(bug, iss, iss_attr, trg_elem, convert=None):
+    if iss_attr in iss:
+        if convert:
+            value = convert(iss[iss_attr])
+        else:
+            value = iss[iss_attr]
+        logging.debug("iss_attr = %s, value = %s", iss_attr, value)
+        et.SubElement(bug, trg_elem).text = value
+
+
+def make_bz_comment(body, who, when):
     """
     <!ELEMENT long_desc (who, bug_when, work_time?, thetext)>
     <!ATTLIST long_desc
@@ -97,7 +110,16 @@ def make_comment(body, who, when):
     return out
 
 
-def format_time(in_time):
+def make_be_comment(body, who, when):
+    out = et.Element("comment")
+    et.SubElement(out, "author").text = who
+    et.SubElement(out, "date").text = when
+    et.SubElement(out, "content-type").text = "text/plain"
+    et.SubElement(out, "body").text = body
+    return out
+
+
+def format_bz_time(in_time):
     """
     in_time is ISO time
     example: "2012-02-23T22:09:58Z"
@@ -106,20 +128,62 @@ def format_time(in_time):
     return dt.strftime("%Y-%m-%d %H:%M:%S %z")
 
 
-def file_issue(cnf, iss):
+def format_be_time(in_time):
+    """
+    in_time is ISO time
+    example: "2012-02-23T22:09:58Z"
+    """
+    logging.debug("in_time = %s", in_time)
+    dt = dateutil.parser.parse(in_time)
+    logging.debug("dt = %s", dt)
+    out = dt.strftime("%a, %d %b %Y %H:%M:%S %z")
+    logging.debug("out = %s, out")
+    return out
+
+
+def file_bugeverywhere_issue(cnf, iss):
+    bug = et.Element("bug")
+
+    add_subelement(bug, iss, u"created_at", "created", format_be_time)
+    add_subelement(bug, iss, u"title", "summary")
+    add_subelement(bug, iss, u"state", "status")
+
+    if (u'user' in iss) and (iss[u'user'] is not None):
+        new_elem = et.Element("reporter")
+        user_login = iss[u"user"][u"login"]
+        new_elem.text = user_login
+        bug.append(new_elem)
+        new_elem = et.Element("creator")
+        new_elem.text = user_login
+        bug.append(new_elem)
+
+    if (u'assignee' in iss) and (iss[u'assignee'] is not None):
+        new_elem = et.Element("assigned")
+        new_elem.text = iss[u"assignee"][u"login"]
+        bug.append(new_elem)
+
+    for comment in get_comments(cnf['git_user'], cnf['git_password'],
+                                cnf['repo'], iss[u"number"]):
+        bug.append(make_be_comment(comment[u"body"],
+                   comment[u"user"][u"login"],
+                   format_be_time(comment[u"updated_at"])))
+
+    return bug
+
+
+def file_bugzilla_issue(cnf, iss):
     """
     Generate XML artifact with the issue
 
     """
     me_user = '%s@github.com' % cnf['git_user']
-    logging.debug("keys = %s", iss.keys())
     labels = ""
     if len(iss[u"labels"]) > 0:
         labels = str(iss[u"labels"])
-    created_at = format_time(iss[u"created_at"])
-    updated_at = format_time(iss[u"updated_at"])
+    created_at = format_bz_time(iss[u"created_at"])
+    updated_at = format_bz_time(iss[u"updated_at"])
     if iss[u"closed_at"] and (iss[u"closed_at"] > iss[u"updated_at"]):
-        closed_at = format_time(iss[u"closed_at"])
+        closed_at = format_bz_time(iss[u"closed_at"])
     else:
         closed_at = updated_at
     status_conversion = {
@@ -154,20 +218,20 @@ def file_issue(cnf, iss):
     et.SubElement(issue_xml, 'reporter').text = iss[u"user"][u"login"]
     et.SubElement(issue_xml, 'assigned_to').text = me_user
 
-    issue_xml.append(make_comment(iss[u"body"], iss[u"user"][u"login"],
-                                  created_at))
+    issue_xml.append(make_bz_comment(iss[u"body"], iss[u"user"][u"login"],
+                                     created_at))
     for comment in get_comments(cnf['git_user'], cnf['git_password'],
                                 cnf['repo'], iss[u"number"]):
-        issue_xml.append(make_comment(comment[u"body"],
-                                      comment[u"user"][u"login"],
-                         format_time(comment[u"updated_at"])))
+        issue_xml.append(make_bz_comment(comment[u"body"],
+                                         comment[u"user"][u"login"],
+                         format_bz_time(comment[u"updated_at"])))
 
     all_additional_items = ""
     # FIXME
     # for item in ("position", "diff_url", "patch_url", "pull_request_url"):
     #     all_additional_items += "%s:%s\n" % (item, getattr(iss, item))
     if len(all_additional_items.strip()) > 0:
-        issue_xml.append(make_comment(all_additional_items,
+        issue_xml.append(make_bz_comment(all_additional_items,
                          me_user, format(datetime.datetime.now())))
 
     return issue_xml
@@ -228,26 +292,38 @@ def main(conf):
     pivotal tracker import
     """
 
-    out_xml = et.Element("bugzilla", attrib={
-        'version': '3.4.14',
-        'urlbase': 'http://github.com',
-        'maintainer': 'mcepl@redhat.com',
-        # FIXME ^^^
-        'exporter': '%s@github.com' % conf['git_user']
-    })
+    if conf['be']:
+        out_xml = et.fromstring("""<be-xml>
+            <version>
+                <tag>bf52e18a</tag>
+                <committer>W. Trevor King</committer>
+                <date>2011-05-25</date>
+                <revision>bf52e18aad6e0e8effcadc6b90dfedf4d15b1859</revision>
+            </version>
+        </be-xml>""")
+    else:
+        out_xml = et.Element("bugzilla", attrib={
+            'version': '3.4.14',
+            'urlbase': 'http://github.com',
+            'maintainer': 'mcepl@redhat.com',
+            # FIXME ^^^
+            'exporter': '%s@github.com' % conf['git_user']
+        })
 
     for state in ('open', 'closed'):
         for issue in get_issues(conf['git_user'], conf['git_password'],
                                 conf['repo'], state=state):
-            logging.debug(json.dumps(issue, indent=4) +
-                          "\n===================================\n")
-            subelement_xml = file_issue(conf, issue)
+            if conf['be']:
+                subelement_xml = file_bugeverywhere_issue(conf, issue)
+            else:
+                subelement_xml = file_bugzilla_issue(conf, issue)
             out_xml.append(subelement_xml)
 
     _xml_indent(out_xml)
     print et.tostring(out_xml, "utf-8")
 
-    logging.info(CLOSING_MESSAGE)
+    if not conf['be']:
+        logging.info(CLOSING_MESSAGE)
 
 if __name__ == '__main__':
     config = load_default_configuration()

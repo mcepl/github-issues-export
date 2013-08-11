@@ -1,0 +1,107 @@
+[
+  {
+    "url": "https://api.github.com/repos/mcepl/github-issues-export/issues/2",
+    "labels_url": "https://api.github.com/repos/mcepl/github-issues-export/issues/2/labels{/name}",
+    "comments_url": "https://api.github.com/repos/mcepl/github-issues-export/issues/2/comments",
+    "events_url": "https://api.github.com/repos/mcepl/github-issues-export/issues/2/events",
+    "html_url": "https://github.com/mcepl/github-issues-export/issues/2",
+    "id": 14632376,
+    "number": 2,
+    "title": "API v2 has been discontinued",
+    "user": {
+      "login": "mcepl",
+      "id": 198999,
+      "avatar_url": "https://secure.gravatar.com/avatar/0d86a43816e04d32defb7fad91c1c33e?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png",
+      "gravatar_id": "0d86a43816e04d32defb7fad91c1c33e",
+      "url": "https://api.github.com/users/mcepl",
+      "html_url": "https://github.com/mcepl",
+      "followers_url": "https://api.github.com/users/mcepl/followers",
+      "following_url": "https://api.github.com/users/mcepl/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mcepl/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mcepl/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mcepl/subscriptions",
+      "organizations_url": "https://api.github.com/users/mcepl/orgs",
+      "repos_url": "https://api.github.com/users/mcepl/repos",
+      "events_url": "https://api.github.com/users/mcepl/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mcepl/received_events",
+      "type": "User"
+    },
+    "labels": [
+
+    ],
+    "state": "closed",
+    "assignee": null,
+    "milestone": null,
+    "comments": 1,
+    "created_at": "2013-05-22T16:33:27Z",
+    "updated_at": "2013-08-10T21:38:55Z",
+    "closed_at": "2013-08-10T21:38:55Z",
+    "pull_request": {
+      "html_url": null,
+      "diff_url": null,
+      "patch_url": null
+    },
+    "body": "We need to switch to v3. Also consider http://stackoverflow.com/a/10626326 (i.e., don't use library, but write directly to the REST API)."
+  },
+  {
+    "url": "https://api.github.com/repos/mcepl/github-issues-export/issues/1",
+    "labels_url": "https://api.github.com/repos/mcepl/github-issues-export/issues/1/labels{/name}",
+    "comments_url": "https://api.github.com/repos/mcepl/github-issues-export/issues/1/comments",
+    "events_url": "https://api.github.com/repos/mcepl/github-issues-export/issues/1/events",
+    "html_url": "https://github.com/mcepl/github-issues-export/issues/1",
+    "id": 3364049,
+    "number": 1,
+    "title": "status_whiteboard is a list",
+    "user": {
+      "login": "mcepl",
+      "id": 198999,
+      "avatar_url": "https://secure.gravatar.com/avatar/0d86a43816e04d32defb7fad91c1c33e?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png",
+      "gravatar_id": "0d86a43816e04d32defb7fad91c1c33e",
+      "url": "https://api.github.com/users/mcepl",
+      "html_url": "https://github.com/mcepl",
+      "followers_url": "https://api.github.com/users/mcepl/followers",
+      "following_url": "https://api.github.com/users/mcepl/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mcepl/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mcepl/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mcepl/subscriptions",
+      "organizations_url": "https://api.github.com/users/mcepl/orgs",
+      "repos_url": "https://api.github.com/users/mcepl/repos",
+      "events_url": "https://api.github.com/users/mcepl/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mcepl/received_events",
+      "type": "User"
+    },
+    "labels": [
+
+    ],
+    "state": "closed",
+    "assignee": {
+      "login": "mcepl",
+      "id": 198999,
+      "avatar_url": "https://secure.gravatar.com/avatar/0d86a43816e04d32defb7fad91c1c33e?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png",
+      "gravatar_id": "0d86a43816e04d32defb7fad91c1c33e",
+      "url": "https://api.github.com/users/mcepl",
+      "html_url": "https://github.com/mcepl",
+      "followers_url": "https://api.github.com/users/mcepl/followers",
+      "following_url": "https://api.github.com/users/mcepl/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mcepl/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mcepl/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mcepl/subscriptions",
+      "organizations_url": "https://api.github.com/users/mcepl/orgs",
+      "repos_url": "https://api.github.com/users/mcepl/repos",
+      "events_url": "https://api.github.com/users/mcepl/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mcepl/received_events",
+      "type": "User"
+    },
+    "milestone": null,
+    "comments": 1,
+    "created_at": "2012-02-23T22:09:58Z",
+    "updated_at": "2012-02-23T22:22:50Z",
+    "closed_at": "2012-02-23T22:21:12Z",
+    "pull_request": {
+      "html_url": null,
+      "diff_url": null,
+      "patch_url": null
+    },
+    "body": "From the pull request:\n> As for the script itself, I believe you have a bug in your status_whiteboard handling code; labels are a list, not a string."
+  }
+]

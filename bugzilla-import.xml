@@ -1,0 +1,64 @@
+<bugzilla exporter="mcepl@github.com" maintainer="mcepl@redhat.com" urlbase="http://github.com" version="3.4.14">
+  <bug>
+    <bug_id>2</bug_id>
+    <creation_ts>2013-05-22 16:33:27 +0000</creation_ts>
+    <short_desc>API v2 has been discontinued</short_desc>
+    <delta_ts>2013-08-10 21:38:55 +0000</delta_ts>
+    <reporter_accessible>1</reporter_accessible>
+    <cclist_accessible>1</cclist_accessible>
+    <classification_id />
+    <classification />
+    <product>test</product>
+    <component>test</component>
+    <version>0.0</version>
+    <rep_platform />
+    <op_sys />
+    <bug_status>RESOLVED</bug_status>
+    <status_whiteboard />
+    <priority />
+    <bug_severity />
+    <everconfirmed />
+    <reporter>mcepl</reporter>
+    <assigned_to>mcepl@github.com</assigned_to>
+    <long_desc isprivate="0">
+      <who>mcepl</who>
+      <bug_when>2013-05-22 16:33:27 +0000</bug_when>
+      <thetext>We need to switch to v3. Also consider http://stackoverflow.com/a/10626326 (i.e., don't use library, but write directly to the REST API).</thetext>
+    </long_desc><long_desc isprivate="0">
+      <who>mcepl</who>
+      <bug_when>2013-08-10 21:38:55 +0000</bug_when>
+      <thetext>Fixed in @80e819f</thetext>
+    </long_desc>
+  </bug><bug>
+    <bug_id>1</bug_id>
+    <creation_ts>2012-02-23 22:09:58 +0000</creation_ts>
+    <short_desc>status_whiteboard is a list</short_desc>
+    <delta_ts>2012-02-23 22:22:50 +0000</delta_ts>
+    <reporter_accessible>1</reporter_accessible>
+    <cclist_accessible>1</cclist_accessible>
+    <classification_id />
+    <classification />
+    <product>test</product>
+    <component>test</component>
+    <version>0.0</version>
+    <rep_platform />
+    <op_sys />
+    <bug_status>RESOLVED</bug_status>
+    <status_whiteboard />
+    <priority />
+    <bug_severity />
+    <everconfirmed />
+    <reporter>mcepl</reporter>
+    <assigned_to>mcepl@github.com</assigned_to>
+    <long_desc isprivate="0">
+      <who>mcepl</who>
+      <bug_when>2012-02-23 22:09:58 +0000</bug_when>
+      <thetext>From the pull request:
+&gt; As for the script itself, I believe you have a bug in your status_whiteboard handling code; labels are a list, not a string.</thetext>
+    </long_desc><long_desc isprivate="0">
+      <who>mcepl</who>
+      <bug_when>2012-02-23 22:23:17 +0000</bug_when>
+      <thetext>Fixed in 9debb723c6</thetext>
+    </long_desc>
+  </bug>
+</bugzilla>
