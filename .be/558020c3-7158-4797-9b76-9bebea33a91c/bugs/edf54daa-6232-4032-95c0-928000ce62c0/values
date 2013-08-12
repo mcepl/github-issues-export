@@ -1,0 +1,50 @@
+{
+
+
+
+
+
+
+    "creator": "Mat\u011bj Cepl <mcepl@redhat.com>", 
+
+
+
+
+
+
+    "reporter": "Mat\u011bj Cepl <mcepl@redhat.com>", 
+
+
+
+
+
+
+    "severity": "minor", 
+
+
+
+
+
+
+    "status": "fixed", 
+
+
+
+
+
+
+    "summary": "BE output cuts comments", 
+
+
+
+
+
+
+    "time": "Mon, 12 Aug 2013 09:30:23 +0000"
+
+
+
+
+
+
+}

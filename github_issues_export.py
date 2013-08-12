@@ -86,7 +86,7 @@ def load_default_configuration():
 
 
 def add_subelement(bug, iss, iss_attr, trg_elem, convert=None):
-    if iss_attr in iss:
+    if (iss_attr in iss) and (iss[iss_attr] is not None):
         if convert:
             value = convert(iss[iss_attr])
         else:
@@ -147,6 +147,7 @@ def file_bugeverywhere_issue(cnf, iss):
     add_subelement(bug, iss, u"created_at", "created", format_be_time)
     add_subelement(bug, iss, u"title", "summary")
     add_subelement(bug, iss, u"state", "status")
+    add_subelement(bug, iss, u"assignee", "assigned")
 
     if (u'user' in iss) and (iss[u'user'] is not None):
         new_elem = et.Element("reporter")
@@ -157,10 +158,10 @@ def file_bugeverywhere_issue(cnf, iss):
         new_elem.text = user_login
         bug.append(new_elem)
 
-    if (u'assignee' in iss) and (iss[u'assignee'] is not None):
-        new_elem = et.Element("assigned")
-        new_elem.text = iss[u"assignee"][u"login"]
-        bug.append(new_elem)
+    if u'body' in iss:
+        bug.append(make_be_comment(iss[u"body"],
+                                   iss[u"user"][u"login"],
+                                   format_be_time(iss[u"created_at"])))
 
     for comment in get_comments(cnf['git_user'], cnf['git_password'],
                                 cnf['repo'], iss[u"number"]):
