@@ -1,4 +1,14 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Redistribution and use in source and binary forms, with or
+# without modification, are permitted provided that the original
+# work is properly attributed to Matěj Cepl.
+# The name of Matěj Cepl may be used to endorse or promote
+# products derived from this software without specific prior
+# written permission.
+# This software is provided by Matěj Cepl "AS IS" and without any
+# express or implied warranties.
+
 from ConfigParser import SafeConfigParser
 from xml.etree import ElementTree as et
 import urllib2
