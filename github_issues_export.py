@@ -46,7 +46,7 @@ def _xml_indent(elem, level=0):
             elem.tail = i
 
 
-def load_default_configuration():
+def get_configuration():
     config = {}
     conf_pars = SafeConfigParser({
         'user': getpass.getuser(),
@@ -78,7 +78,7 @@ def load_default_configuration():
     parser.add_argument("-c", "--component", required=False,
                         action="store", dest="bz_component", default=None,
                         help="Bugzilla user name")
-    parser.add_argument("repo", nargs="?",
+    parser.add_argument("repo",
                         help="name of the github repo")
     options = parser.parse_args()
 
@@ -316,8 +316,7 @@ def main(conf):
         out_xml = et.Element("bugzilla", attrib={
             'version': '3.4.14',
             'urlbase': 'http://github.com',
-            'maintainer': 'mcepl@redhat.com',
-            # FIXME ^^^
+            'maintainer': 'mcepl@cepl.eu',
             'exporter': '%s@github.com' % conf['git_user']
         })
 
@@ -337,5 +336,5 @@ def main(conf):
         logging.info(CLOSING_MESSAGE)
 
 if __name__ == '__main__':
-    config = load_default_configuration()
+    config = get_configuration()
     main(config)
